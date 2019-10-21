@@ -2,6 +2,7 @@
 
 [image1]: ./images/CleanedDataset_disaster_messages_distr.PNG "Disaster Classification:"
 [image2]: ./images/CleanedDataset_disaster_messages_categories_distr.PNG "Category Distribution:"
+[image3]: ./images/CleanedDataset_disaster_messages_multipleCategoryLabelsDistribution.PNG "Multiple Label Distribution:"
 
 
 # Disaster Messages Classifier Project
@@ -22,6 +23,8 @@ After some cleaning steps of the merged dataset the following distribution of th
 ![Category Distribution:][image2]
 
 Regarding the machine learning pipeline, we work on a multi-class, multi-label text classification which assigns to each message sample a set of category target labels. The messages are short and an imbalanced data distribution exists.
+
+![Multiple Label Distribution:][image3]
 
 ### Implementation
 The implemented project components are:
