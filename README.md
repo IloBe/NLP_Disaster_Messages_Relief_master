@@ -9,7 +9,7 @@
 
 ## Project Overview
 ### General
-Welcome to this **Natural Language Processing** project: we analyse disaster data from [Figure Eight](https://www.figure-eight.com/) to build a model for a web app API that categorises this disaster messages.
+Welcome to this **Natural Language Processing** project from Udacity: we analyse disaster data from [Figure Eight](https://www.figure-eight.com/) to build a model for a web app API that categorises this disaster messages.
 
 In an emergency case, the disaster response organisations have to deal with millions of messages, in a situtation they have the least capacity to pull out the messages which are the most important. First, it has to be decided if the message is a real disaster one or not.
 
@@ -34,7 +34,7 @@ The implemented project components are:
    - Load, to save the cleaned dataset with its disaster messages in an SQL database
 
 2. ML (Machine Learning) Pipeline
-   - During the disaster messages processing, the English text is tokenized, lower cased, lemmatized and contractions are expanded.        Spaces, punctuation and English stop words are removed
+   - During the disaster messages processing, the English text is tokenized, lower cased, lemmatized and contractions are expanded. Spaces, punctuation and English stop words are removed
    - Scikit-learn's pipeline mechanism automates the training workflow of the machine learning classifiers
    - GridSearch cross validation for parameter hypertuning of each classifier
    - Performance evaluation for the classifiers using specific metrics to find the best model for the NLP task
