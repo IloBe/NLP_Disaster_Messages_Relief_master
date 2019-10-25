@@ -32,6 +32,7 @@ The implemented project components are:
    - Data Wrangling, with import libraries, gather and cleaning datasets
    - Exploratory Data Analysis (EDA), with data exploration including statistics and visualisations
    - Load, to save the cleaned dataset with its disaster messages in an SQL database
+   - Note according cleaning: some project requirements are given, so, not all cleaning steps which would happen in real life shall be done; this is necessary to fulfil the project goal
 
 2. ML (Machine Learning) Pipeline
    - During the disaster messages processing, the English text is tokenized, lower cased, lemmatized and contractions are expanded. Spaces, punctuation and English stop words are removed
