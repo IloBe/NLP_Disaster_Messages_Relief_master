@@ -22,7 +22,11 @@ After some cleaning steps of the merged dataset the following distribution of th
 
 ![Category Distribution:][image2]
 
-Regarding the machine learning pipeline, we work on a multi-class, multi-label text classification which assigns to each message sample a set of category target labels. The messages are short and an imbalanced data distribution exists.
+Regarding the machine learning pipeline, we work on a multi-output, multi-label text classification which assigns to each message sample a set of category target labels.<br>
+According scikit-learn [documentation](https://scikit-learn.org/stable/modules/multiclass.html) "In multilabel learning, the joint set of binary classification tasks is expressed with label binary indicator array: each sample is one row of a 2d array of shape (n_samples, n_classes) with binary values: the one, i.e. the non zero elements, corresponds to the subset of labels. An array such as np.array([[1, 0, 0], [0, 1, 1], [0, 0, 0]]) represents label 0 in the first sample, labels 1 and 2 in the second sample, and no labels in the third sample." and<br>
+"Multioutput classification support can be added to any classifier with MultiOutputClassifier. This strategy consists of fitting one classifier per target. This allows multiple target variable classifications. The purpose of this class is to extend estimators to be able to estimate a series of target functions (f1,f2,f3…,fn) that are trained on a single X predictor matrix to predict a series of responses (y1,y2,y3…,yn)."
+
+The messages are short and an imbalanced data distribution exists.
 
 ![Multiple Label Distribution:][image3]
 
