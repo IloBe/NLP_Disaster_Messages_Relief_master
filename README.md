@@ -3,6 +3,7 @@
 [image1]: ./images/CleanedDataset_disaster_messages_distr.PNG "Disaster Classification:"
 [image2]: ./images/CleanedDataset_disaster_messages_categories_distr.PNG "Category Distribution:"
 [image3]: ./images/CleanedDataset_disaster_messages_multipleCategoryLabelsDistribution.PNG "Multiple Label Distribution:"
+[image4]: ./images/DisasterMessages_categories_correlationMatrix.PNG "Categories Correlation Matrix:"
 
 
 # Disaster Messages Classifier Project
@@ -29,6 +30,12 @@ According scikit-learn [documentation](https://scikit-learn.org/stable/modules/m
 The messages are short and an imbalanced data distribution exists.
 
 ![Multiple Label Distribution:][image3]
+
+The correlations of the categories is shown in the correlation matrix.
+
+![Categories Correlation Matrix:][image4]
+
+Correlation values >0.8 are relevant. This fits to the infrastructure features. Around value 0.8 is the feature combination direct_report and request. The category child_alone is empty and therefore a grey column and row appeared. All this shall be handled with the ML pipeline model implementation and not directly with the dataset.
 
 ### Implementation
 The implemented project components are:
