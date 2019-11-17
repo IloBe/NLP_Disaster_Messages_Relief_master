@@ -48,7 +48,7 @@ The implemented project components are:
 2. ML (Machine Learning) Pipeline
    - During the disaster messages processing, the English text is tokenized, lower cased, lemmatized and contractions are expanded. Spaces, punctuation and English stop words are removed
    - Scikit-learn's pipeline mechanism automates the training workflow of the machine learning classifiers
-   - GridSearch cross validation for parameter hypertuning of each classifier
+   - GridSearch cross validation for parameter hypertuning of each classifier without and with LSA decomposition
    - Performance evaluation for the classifiers using specific metrics to find the best model for the NLP task
    
 3. Flask Web App
