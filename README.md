@@ -43,7 +43,9 @@ The implemented project components are:
    - Data Wrangling, with import libraries, gather and cleaning datasets
    - Exploratory Data Analysis (EDA), with data exploration including statistics and visualisations
    - Load, to save the cleaned dataset with its disaster messages in an SQL database
-   - Note according cleaning: some project requirements are given, so, not all cleaning steps which would happen in real life shall be done; this is necessary to fulfil the project goal
+   - Note according cleaning: some project requirements are given, so, not all cleaning steps which would happen in real life shall be done; this is necessary to fulfil the project goal about the ML pipeline
+   
+   All this tasks are part of the Python notebook file and of the file <i>data/process_data.py</i>.
 
 2. ML (Machine Learning) Pipeline
    - During the disaster messages processing, the English text is tokenized, lower cased, lemmatized and contractions are expanded. Spaces, punctuation and English stop words are removed
@@ -51,7 +53,17 @@ The implemented project components are:
    - GridSearch cross validation for parameter hypertuning of each classifier without and with LSA decomposition
    - Performance evaluation for the classifiers using specific metrics to find the best model for the NLP task
    
-3. Flask Web App
+   This Python notebook pipeline work is stored in the file <i>models/train_classifier.py</i> as well. 
+   
+3. Flask Web App<br>
+This web application classifies a newly added disaster text message into the categories to reach an appropriate relief agency for help.<br>
+[Flask](https://palletsprojects.com/p/flask/) is a popular Python web application framework for easy or more complex tasks.
+
+   - To start the web application, change to the <i>app</i> directory and run the following command: 
+     ```
+     python run.py
+     ```
+
 
 ## Project Instructions
 
