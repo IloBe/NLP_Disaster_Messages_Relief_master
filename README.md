@@ -57,13 +57,18 @@ The implemented project components are:
    
 3. Flask Web App<br>
 This web application classifies a newly added disaster text message into the categories to reach an appropriate relief agency for help.<br>
-[Flask](https://palletsprojects.com/p/flask/) is a popular Python web application framework for easy or more complex tasks.
+[Flask](https://palletsprojects.com/p/flask/) is a popular Python web application framework for easy up to more complex tasks. Information how to use it can be found on this [Quickstart](https://flask.palletsprojects.com/en/1.1.x/quickstart/#static-files) page or on Miguel Grinbergs [Flask Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world).<br>
+For this project Flask is used together with [Bootstrap 3](https://www.w3schools.com/bootstrap/default.asp).
 
-   - To start the web application, change to the <i>app</i> directory and run the following command: 
+   - On your local computer to start the web application, in your command line tool change to the <i>app</i> directory and run the following command: 
      ```
      python run.py
      ```
-
+     Some information is shown ending with '* Running on http://0.0.0.0:3001/ (Press CTRL+C to quit)' ...
+   - Then on your browser call:
+     ```
+     http://localhost:3001/
+     ```
 
 ## Project Instructions
 
