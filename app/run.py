@@ -13,11 +13,13 @@ nltk.download(['punkt', 'wordnet', 'stopwords'])
 import re
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
+from nltk.corpus import wordnet as wn
 from nltk.corpus import stopwords
 stop_words = set(stopwords.words('english'))
 stop_words.remove('no')
 stop_words.remove('not')
 
+from langdetect import detect, DetectorFactory
 from bs4 import BeautifulSoup
 
 from flask import Flask
@@ -156,6 +158,52 @@ CONTRACTION_MAP = {
     "you're": "you are",
     "you've": "you have"
 }
+
+
+# see: https://pypi.org/project/langdetect/
+# Language detection algorithm is non-deterministic,
+# which means that if you try to run it on a text which is either
+# too short or too ambiguous, you might get different results everytime you run it.
+# Therefore the DetectorFactory.seed is necessary.
+def lang_detect(text):
+    '''
+    Detects the language of the input text reflections
+    
+    Input
+        a string text
+    Output
+        a list of detected languages
+    '''
+    DetectorFactory.seed = 14
+    
+    lang = []
+    for refl in text:
+        lang.append(detect(refl))
+    return lang
+
+
+def check_word_en(text):
+    '''
+    Checks if the word is an English one by usage of the WordNet vocabulary
+    
+    Input
+        text string to check if being part of the English vocabulary
+    Output
+        returns the remaining English word list if available and informs
+        the user if non English words or strings are available
+    '''
+    
+    text_str = []
+    for word in text.split():
+        # Check to see if the words are in the dictionary
+        if wn.synsets(word):
+            text_str.append(word)
+        else:
+            if lang_detect(word) != 'en':
+                message = "The text part '" + word + "' is not an English word. Change your input message."
+                print(message)        
+    return text_str
+
 
 # function from Dipanjan's repository:
 # https://github.com/dipanjanS/practical-machine-learning-with-python/blob/master/bonus%\
@@ -316,17 +364,33 @@ def index():
 # web page that handles user query and displays model results
 @app.route('/go')
 def go():
-    # save user input in query
+    # save user input in query (note: this is the text query part of the master.html)
     query = request.args.get('query', '') 
+    print("Query")
+    print(query)
+    
+    # creates word tokens out of the query string
+    query_tokens = tokenize(query)
+    print("Tokenized query text:")
+    print(query_tokens)
+    text = ' '.join(query_tokens)
+    
+    # checks if the words are are English words,
+    # if not remove it from the query tokens and inform the user
+    modified_query_list = check_word_en(text)
+    modified_query = ' '.join(modified_query_list)
+    print("Modified query text:")
+    print(modified_query)
 
     # use model to predict classification for query
-    classification_labels = model.predict([query])[0]
+    classification_labels = model.predict([modified_query])[0]
     classification_results = dict(zip(df.columns[4:], classification_labels))
 
     # This will render the go.html Please see that file. 
     return render_template(
         'go.html',
-        query=query,
+        query = "The original message text is: '" + query + 
+                "' and the modified English query words are: '" + modified_query + "'",
         classification_result=classification_results
     )
 
