@@ -57,10 +57,10 @@ The implemented project components are:
    
 3. Flask Web App<br>
 This web application classifies a newly added disaster text message into the categories to reach an appropriate relief agency for help.<br>
-[Flask](https://palletsprojects.com/p/flask/) is a popular Python web application framework for easy up to more complex tasks. Information how to use it can be found on this [Quickstart](https://flask.palletsprojects.com/en/1.1.x/quickstart/#static-files) page or on Miguel Grinbergs [Flask Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world).<br>
-For this project Flask is used together with [Bootstrap 3](https://www.w3schools.com/bootstrap/default.asp).
+[Flask](https://palletsprojects.com/p/flask/) is a popular Python microframework to build web applications for easy up to more complex tasks. Information how to use it can be found on this [Quickstart](https://flask.palletsprojects.com/en/1.1.x/quickstart/#static-files) page or on Miguel Grinbergs [Flask Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world).<br>
+For this project, Flask is used together with [Bootstrap 3](https://www.w3schools.com/bootstrap/default.asp).
 
-   - On your local computer to start the web application, in your command line tool change to the <i>app</i> directory and run the following command: 
+   - On your local computer to start the web application, in your command line tool change to the <i>app</i> directory of the project and run the following command: 
      ```
      python run.py
      ```
@@ -69,6 +69,25 @@ For this project Flask is used together with [Bootstrap 3](https://www.w3schools
      ```
      http://localhost:3001/
      ```
+     to start the web application.
 
 ## Project Instructions
+This project is implemented with Python 3.7, scikit-learn and scikit-multilearn etc. using its own virtual environment. Python 3 includes already the virtual environment support.<br>
+So, working on your local machine, first navigate to the project folder
+- cd disaster-messages-project
 
+and then for 
+- __Windows__ (to install with __GPU support__, change `requirements/requirements.txt` to `requirements/requirements-gpu.txt`):  
+	```
+	conda create --name disaster-messages-project python=3.7
+	activate disaster-messages-project
+	pip install -r requirements/requirements.txt
+	```
+- (Optional) **If you are running the project on your local machine (and not using AWS)**, create an [IPython kernel](http://ipython.readthedocs.io/en/stable/install/kernel_install.html) for the `disaster-messages-project` environment. 
+```
+python -m ipykernel install --user --name disaster-messages-project --display-name "disaster-messages-project"
+```
+- Open the notebooks, e.g. getting the whole list of files by calling
+```
+jupyter notebook
+```
