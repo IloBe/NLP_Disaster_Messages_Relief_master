@@ -195,13 +195,20 @@ def check_word_en(text):
     
     text_str = []
     for word in text.split():
-        # Check to see if the words are in the dictionary
-        if wn.synsets(word):
-            text_str.append(word)
+        print(word)
+        # check if the word is an English one
+        if lang_detect(word) != 'en':
+            message = "The text part '" + word + \
+                      "' is not an English word. Change your input message."       
         else:
-            if lang_detect(word) != 'en':
-                message = "The text part '" + word + "' is not an English word. Change your input message."
-                print(message)        
+            # Check to see if the words are in the dictionary
+            if wn.synsets(word):
+                text_str.append(word)
+            else:
+                message = "The en coding text part '" + word + \
+                          "' is not in the wordnet dictionary. Change your input message."
+        
+        print(message)       
     return text_str
 
 
@@ -381,9 +388,14 @@ def go():
     modified_query = ' '.join(modified_query_list)
     print("Modified query text:")
     print(modified_query)
+    print(type(modified_query))
 
-    # use model to predict classification for query
-    classification_labels = model.predict([modified_query])[0]
+    if not modified_query:
+        classification_labels = np.zeros((35,), dtype=int)
+    else:
+        # use model to predict classification for query
+        classification_labels = model.predict([modified_query])[0]
+
     classification_results = dict(zip(df.columns[4:], classification_labels))
 
     # This will render the go.html Please see that file. 
