@@ -20,6 +20,7 @@ stop_words.remove('no')
 stop_words.remove('not')
 
 from langdetect import detect, DetectorFactory
+DetectorFactory.seed = 14
 from bs4 import BeautifulSoup
 
 from flask import Flask
@@ -195,20 +196,15 @@ def check_word_en(text):
     
     text_str = []
     for word in text.split():
-        print(word)
-        # check if the word is an English one
-        if lang_detect(word) != 'en':
-            message = "The text part '" + word + \
-                      "' is not an English word. Change your input message."       
+        print(word)  
+        # removed check of having a single EN coded word, detect() is not reliable on single words;
+        # Check to see if the words are in the dictionary
+        if wn.synsets(word):
+            text_str.append(word)
         else:
-            # Check to see if the words are in the dictionary
-            if wn.synsets(word):
-                text_str.append(word)
-            else:
-                message = "The en coding text part '" + word + \
-                          "' is not in the wordnet dictionary. Change your input message."
-        
-        print(message)       
+            message = "The en coding text part '" + word + \
+                      "' is not in the wordnet dictionary. Change your input message."
+            print(message)     
     return text_str
 
 
@@ -372,37 +368,57 @@ def index():
 @app.route('/go')
 def go():
     # save user input in query (note: this is the text query part of the master.html)
+    # future toDo: 
+    # - if it is identified being a proper disaster message, and not a nonsense one,
+    #   related category shall be 1
+    # - as genre category this should be classified as 'direct' message
     query = request.args.get('query', '') 
     print("Query")
     print(query)
-    
-    # creates word tokens out of the query string
-    query_tokens = tokenize(query)
-    print("Tokenized query text:")
-    print(query_tokens)
-    text = ' '.join(query_tokens)
-    
-    # checks if the words are are English words,
-    # if not remove it from the query tokens and inform the user
-    modified_query_list = check_word_en(text)
-    modified_query = ' '.join(modified_query_list)
-    print("Modified query text:")
-    print(modified_query)
-    print(type(modified_query))
-
-    if not modified_query:
-        classification_labels = np.zeros((35,), dtype=int)
-    else:
-        # use model to predict classification for query
-        classification_labels = model.predict([modified_query])[0]
-
+    modified_query = ""
+    classification_labels = np.zeros((35,), dtype=int)
     classification_results = dict(zip(df.columns[4:], classification_labels))
+    
+    if not query:
+        print("NO query string available.")
+    else: 
+        # a query string exists
+        print("Language coding of query string:")
+        print(detect(query))
+        if detect(query) != 'en':
+            message = "The query string '" + query + "' is not detected being English. Change your input message."
+        else:   
+            # creates word tokens out of the query string
+            query_tokens = tokenize(query)
+            print("Tokenized query text:")
+            print(query_tokens)
+            text = ' '.join(query_tokens)
+        
+            # checks if the words are English words of the wordnet dictionary,
+            # if not remove it from the query tokens and inform the user (on command line tool by now)
+            modified_query_list = check_word_en(text)
+            modified_query = ' '.join(modified_query_list)
+            print("Modified query text:")
+            print(modified_query)
+            print(type(modified_query))
+
+        if not modified_query:
+            classification_labels = np.zeros((35,), dtype=int)
+        else:
+            # use model to predict classification for query
+            classification_labels = model.predict([modified_query])[0]
+            
+        print("model classification labels are:")
+        print(classification_labels)
+        print(type(classification_labels))
+        
+        classification_results = dict(zip(df.columns[4:], classification_labels))
 
     # This will render the go.html Please see that file. 
     return render_template(
         'go.html',
         query = "The original message text is: '" + query + 
-                "' and the modified English query words are: '" + modified_query + "'",
+        "' and the modified English query words are: '" + modified_query + "'",
         classification_result=classification_results
     )
 
