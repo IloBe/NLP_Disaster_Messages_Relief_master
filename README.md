@@ -77,17 +77,17 @@ So, working on your local machine, first navigate to the project folder
 - cd disaster-messages-project
 
 and then for 
-- __Windows__ (to install with __GPU support__, change `requirements/requirements.txt` to `requirements/requirements-gpu.txt`):  
+- __Windows__ (to install with __GPU support__, change `requirements/requirements.txt` to `requirements/requirements-gpu.txt`):
 	```
 	conda create --name disaster-messages-project python=3.7
 	activate disaster-messages-project
 	pip install -r requirements/requirements.txt
 	```
-- (Optional) **If you are running the project on your local machine (and not using AWS)**, create an [IPython kernel](http://ipython.readthedocs.io/en/stable/install/kernel_install.html) for the `disaster-messages-project` environment. 
-```
-python -m ipykernel install --user --name disaster-messages-project --display-name "disaster-messages-project"
-```
-- Open the notebooks, e.g. getting the whole list of files by calling
-```
-jupyter notebook
-```
+- (Optional) **If you are running the project on your local machine (and not using AWS)**, create an [IPython kernel](http://ipython.readthedocs.io/en/stable/install/kernel_install.html) for the `disaster-messages-project` environment:
+	```
+	python -m ipykernel install --user --name disaster-messages-project --display-name "disaster-messages-project"
+	```
+- Open the notebooks, e.g. getting the whole list of files by calling:
+	```
+	jupyter notebook
+	```
