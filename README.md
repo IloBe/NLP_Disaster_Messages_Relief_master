@@ -23,11 +23,11 @@ After some cleaning steps of the merged dataset the following distribution of th
 
 ![Category Distribution:][image2]
 
-Regarding the machine learning pipeline, we work on a multi-output, multi-label text classification which assigns to each message sample a set of category target labels.<br>
+Regarding the machine learning pipeline, we work on a multi-class, multi-output text classification which assigns to each message sample a set of category target labels.<br>
 According scikit-learn [documentation](https://scikit-learn.org/stable/modules/multiclass.html) "In multilabel learning, the joint set of binary classification tasks is expressed with label binary indicator array: each sample is one row of a 2d array of shape (n_samples, n_classes) with binary values: the one, i.e. the non zero elements, corresponds to the subset of labels. An array such as np.array([[1, 0, 0], [0, 1, 1], [0, 0, 0]]) represents label 0 in the first sample, labels 1 and 2 in the second sample, and no labels in the third sample." and<br>
 "Multioutput classification support can be added to any classifier with MultiOutputClassifier. This strategy consists of fitting one classifier per target. This allows multiple target variable classifications. The purpose of this class is to extend estimators to be able to estimate a series of target functions (f1,f2,f3…,fn) that are trained on a single X predictor matrix to predict a series of responses (y1,y2,y3…,yn)."
 
-The messages are short and an imbalanced data distribution exists.
+The messages are short and an imbalanced data distribution exists. Nevertheless, the messages are mapped to the target categories with a different amount. In general, there are a lot of sparse vectors having mostly 0 values included. Only 1 message is mapped to 27 categories.
 
 ![Multiple Label Distribution:][image3]
 
@@ -36,6 +36,26 @@ The correlations of the categories is shown in the correlation matrix.
 ![Categories Correlation Matrix:][image4]
 
 Correlation values >0.8 are relevant. This fits to the infrastructure features. Around value 0.8 is the feature combination direct_report and request. The category child_alone is empty and therefore a grey column and row appeared. All this shall be handled with the ML pipeline model implementation and not directly with the dataset.
+
+### Information regarding the imbalanced dataset
+As we can see, this dataset is a highly imbalanced one. We could do a balancing before classification. The categority classes with low numbers of observations are outnumbered. So, the dataset is highly skewed. To create a balanced dataset several strategies exists:
+- Undersampling the majority classes
+- Oversampling the minority classes
+- Combining over- and under-sampling
+- Create ensemble balanced sets
+But the goal of this project is not to do associated preprocessing on the dataset (like removing redundant categories or merge redundant information), the goal is the usage of proper feature engineering and model selection.
+
+Another resampling technique is `cross-validation`, a method repeatingly creating additional training samples from the original training dataset to obtain additional fit information from the selected model. It creates an additional model validation set. The prediction model fits on the remaining training set and afterwards is doing its predictions on the validation set. This calculated validation error rate is an estimation of the datasets test error rate. Specific cross validation strategies exist, we are using the `k-fold cross-validation`, that divides the training set in k non-overlapping groups - called folders. One of this folders acts as a validation set and the rest is used for training. This process is repeated k times, each time a different validation set is selected out of the group. The k-fold cross validation estimate is calculated by averaging the single k times estimation results. For k we use 5 because of time consuming calculations and not 10 which would be a better value for k.
+
+According the [paper](https://arxiv.org/ftp/arxiv/papers/1810/1810.11612.pdf) <i>Handling Imbalanced Dataset in Multi-label Text Categorization using Bagging and Adaptive Boosting</i> of 27 October 2018 from Genta Indra Winata and Masayu Leylia Khodra, regarding new data, it is more appropriate to balance the dataset on the algorithm level instead of the data level to avoid overfitting. The algorithm "approach modifies algorithm by adjusting weight or cost of various classes."<br>
+So, the `AdaBoostClassifier` is an ensemble method using boosting process to optimise weights. Evaluation showed that this estimator for the <i>MultiOutputClassifier</i> works best compared to the other ones like e.g. <i>RandomForestClassifier</i>. The <i>AdaBoostClassifier</i> is using the <i>DecisionTreeClassifier</i> as its own base estimator. The tree parameters are changed in the parameter grid to improve the imbalanced data situation. Weak learners are boosted to be stronger learners and the results are aggregated at the end.
+
+Additionally for our task, we do some feature engineering.<br>
+`feature-selection` approach which can be done after the feature extraction of the `TfidfVectorizer` that is creating [feature vectors](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html#sklearn.feature_extraction.text.TfidfVectorizer).
+
+Additionally, scikit-learn offers the package [feature decomposition](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.decomposition) to reduce the complexity of features. With its help a subsampling is added:
+- For the sparse matrix delivered from the `TfidfVectorizer` instance we use 3000 most frequent text features, each feature token shall appear at least 2 times and n-gram wording during grid search hyperparameter tuning. The  importance of the token is increased proportionally to the number of appearing in the disaster messages.
+- Feature relationship of the sparse matrix is handled with `TruncatedSVD` for latent semantic analysis (LSA). There, a component relationship parameter is evaluated via grid search hyperparameter tuning. Afterwards we have to normalise again.
 
 ### Implementation
 The implemented project components are:
