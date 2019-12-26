@@ -24,6 +24,7 @@ After some cleaning steps of the merged dataset the following distribution of th
 ![Category Distribution:][image2]
 
 Regarding the machine learning pipeline, we work on a multi-class, multi-output text classification which assigns to each message sample a set of category target labels.<br>
+
 According scikit-learn [documentation](https://scikit-learn.org/stable/modules/multiclass.html) "In multilabel learning, the joint set of binary classification tasks is expressed with label binary indicator array: each sample is one row of a 2d array of shape (n_samples, n_classes) with binary values: the one, i.e. the non zero elements, corresponds to the subset of labels. An array such as np.array([[1, 0, 0], [0, 1, 1], [0, 0, 0]]) represents label 0 in the first sample, labels 1 and 2 in the second sample, and no labels in the third sample." and<br>
 "Multioutput classification support can be added to any classifier with MultiOutputClassifier. This strategy consists of fitting one classifier per target. This allows multiple target variable classifications. The purpose of this class is to extend estimators to be able to estimate a series of target functions (f1,f2,f3…,fn) that are trained on a single X predictor matrix to predict a series of responses (y1,y2,y3…,yn)."
 
@@ -38,11 +39,14 @@ The correlations of the categories is shown in the correlation matrix.
 Correlation values >0.8 are relevant. This fits to the infrastructure features. Around value 0.8 is the feature combination direct_report and request. The category child_alone is empty and therefore a grey column and row appeared. All this shall be handled with the ML pipeline model implementation and not directly with the dataset.
 
 ### Information regarding the imbalanced dataset
-As we can see, this dataset is a highly imbalanced one. We could do a balancing before classification. The categority classes with low numbers of observations are outnumbered. So, the dataset is highly skewed. To create a balanced dataset several strategies exists:
+As we can see, we are dealing with an imbalanced dataset, therefore not all estimator models can be used. One machine learning classifier could be more biased towards the majority class, causing bad classification of the minority class compared to other model types. Therefore we have to take care.
+
+We could do a balancing before classification. The categority classes with low numbers of observations are outnumbered. So, the dataset is highly skewed. To create a balanced dataset several strategies exists:
 - Undersampling the majority classes
 - Oversampling the minority classes
 - Combining over- and under-sampling
 - Create ensemble balanced sets
+
 But the goal of this project is not to do associated preprocessing on the dataset (like removing redundant categories or merge redundant information), the goal is the usage of proper feature engineering and model selection.
 
 Another resampling technique is `cross-validation`, a method repeatingly creating additional training samples from the original training dataset to obtain additional fit information from the selected model. It creates an additional model validation set. The prediction model fits on the remaining training set and afterwards is doing its predictions on the validation set. This calculated validation error rate is an estimation of the datasets test error rate. Specific cross validation strategies exist, we are using the `k-fold cross-validation`, that divides the training set in k non-overlapping groups - called folders. One of this folders acts as a validation set and the rest is used for training. This process is repeated k times, each time a different validation set is selected out of the group. The k-fold cross validation estimate is calculated by averaging the single k times estimation results. For k we use 5 because of time consuming calculations and not 10 which would be a better value for k.
