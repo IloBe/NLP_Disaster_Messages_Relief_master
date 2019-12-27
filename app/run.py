@@ -26,6 +26,7 @@ from bs4 import BeautifulSoup
 from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
+from plotly.graph_objs import Table
 # deprecated in scikit-learn 0.21, removed in 0.23
 #from sklearn.externals import joblib   
 import joblib
@@ -278,10 +279,45 @@ def tokenize(text):
     for tok in tokens:
         clean_tok = lemmatizer.lemmatize(tok).lower().strip()
         # remove stop words and take care of words having at least 2 characters
-        if (len(clean_tok) > 1) & (clean_tok not in stop_words):
+        if (len(clean_tok) > 2) & (clean_tok not in stop_words):
             clean_tokens.append(clean_tok)
 
     return clean_tokens
+
+
+def compute_word_counts(messages, load=True, filepath='../data/counts.npz'):
+    '''
+	Function computes the top 20 words in the dataset with counts of each term
+	
+    Input:
+        messages: list or numpy array
+        load: Boolean value if load or run model 
+        filepath: filepath to save or load data
+            )
+    Output:
+        top_words: list
+        top_counts: list 
+    '''
+	
+    if load:
+        # load arrays
+        data = np.load(filepath)
+        return list(data['top_words']), list(data['top_counts'])
+    else:
+        # get top words 
+        counter = Counter()
+        for message in messages:
+            tokens = tokenize(message)
+            for token in tokens:
+                counter[token] += 1
+        # top 20 words 
+        top = counter.most_common(20)
+        top_words = [word[0] for word in top]
+        top_counts = [count[1] for count in top]
+        # save arrays
+        np.savez(filepath, top_words=top_words, top_counts=top_counts)
+        return list(top_words), list(top_counts)
+
 
 # load data
 engine = create_engine('sqlite:///../data/Disaster_Messages_engine.db')
@@ -294,10 +330,13 @@ model = joblib.load("../models/classifier.pkl")
 # index webpage displays visuals and receives user input text for model
 @app.route('/')
 @app.route('/index')
-def index():
-    
-    for text in df['message'].values:
-        tokenized_ = tokenize(text)
+def index():   
+    #for text in df['message'].values:
+    #    tokenized_ = tokenize(text)
+    # top 20 word counts with list objects
+    load=False
+    top_words_20, top_counter_20 = compute_word_counts(messages=df['message'].values,
+                                                       load=load, filepath='../data/counts.npz')
     
     # extract data needed for visuals
     # Genre message distribution
@@ -352,6 +391,30 @@ def index():
                     'tickangle': -45,
                     'automargin':True
                 }
+            }
+        },
+        {
+            'data': [
+                Table(
+                    header=dict(
+					    values=['<b>Counter</b>', '<b>Words</b>'],
+						line_color='darkslategray',
+                        fill_color='grey',
+                        align=['center'],
+                        font=dict(color='white', size=12)
+					),
+                    cells=dict(
+					    values=[top_counter_20, top_words_20],
+						line_color='darkslategray',
+                        fill_color = 'white',
+                        align = ['center'],
+                        font = dict(color = 'darkslategray', size = 11)
+				    )
+                )
+            ],
+
+            'layout': {
+                'title': '<b>20 Top Words of Messages</b>'
             }
         }
     ]
