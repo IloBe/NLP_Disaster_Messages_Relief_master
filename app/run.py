@@ -18,6 +18,10 @@ from nltk.corpus import stopwords
 stop_words = set(stopwords.words('english'))
 stop_words.remove('no')
 stop_words.remove('not')
+stop_words.add('please')
+stop_words.add('would')
+stop_words.add('should')
+stop_words.add('could')
 
 from langdetect import detect, DetectorFactory
 DetectorFactory.seed = 14
