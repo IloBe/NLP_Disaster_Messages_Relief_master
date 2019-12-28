@@ -246,7 +246,7 @@ def tokenize(text):
         clean_tok = lemmatizer.lemmatize(tok).lower().strip()
         # Small ones are probably no relevant words ...
         # remove English stop words
-        if (len(clean_tok) > 1) & (clean_tok not in stop_words):
+        if (len(clean_tok) > 2) & (clean_tok not in stop_words):
             clean_tokens.append(clean_tok)
 
     return clean_tokens
