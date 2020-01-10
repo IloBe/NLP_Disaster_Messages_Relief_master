@@ -115,3 +115,6 @@ and then for
 	```
 	jupyter notebook
 	```
+
+## License
+This project coding is released under the [MIT](https://github.com/IloBe/NLP_Disaster_Messages_Relief_master/blob/master/LICENSE) license.
