@@ -12,7 +12,7 @@
 ### General
 Welcome to this **Natural Language Processing** project from Udacity: we analyse disaster data from [Figure Eight](https://www.figure-eight.com/) to build a model for a web app API that categorises this disaster messages.
 
-In an emergency case, the disaster response organisations have to deal with millions of messages, in a situtation they have the least capacity to pull out the messages which are the most important. First, it has to be decided if the message is a real disaster one or not.
+In an emergency case, the disaster response organisations have to deal with millions of messages, in a situation they have the least capacity to pull out the messages which are the most important. First, it has to be decided if the message is a real disaster one or not.
 
 ![Disaster Classification:][image1]
 
@@ -41,7 +41,7 @@ Correlation values >0.8 are relevant. This fits to the infrastructure features. 
 ### Information regarding the imbalanced dataset
 As we can see, we are dealing with an imbalanced dataset, therefore not all estimator models can be used. One machine learning classifier could be more biased towards the majority class, causing bad classification of the minority class compared to other model types. Therefore we have to take care.
 
-We could do a balancing before classification. The categority classes with low numbers of observations are outnumbered. So, the dataset is highly skewed. To create a balanced dataset several strategies exists:
+We could do a balancing before classification. The categority classes with low numbers of observations are outnumbered. So, the dataset is highly skewed. To create a balanced dataset several strategies exist:
 - Undersampling the majority classes
 - Oversampling the minority classes
 - Combining over- and under-sampling
@@ -101,7 +101,7 @@ So, working on your local machine, first navigate to the project folder
 - cd disaster-messages-project
 
 and then for 
-- __Windows__ (to install with __GPU support__, change `requirements/requirements.txt` to `requirements/requirements-gpu.txt`):
+- __Windows__ :
 	```
 	conda create --name disaster-messages-project python=3.7
 	activate disaster-messages-project
@@ -115,6 +115,7 @@ and then for
 	```
 	jupyter notebook
 	```
+- Before running code, change the kernel to match the disaster-messages-project environment by using the drop-down menu (**Kernel > Change kernel > disaster-messages-project**)
 
 ## License
 This project coding is released under the [MIT](https://github.com/IloBe/NLP_Disaster_Messages_Relief_master/blob/master/LICENSE) license.
